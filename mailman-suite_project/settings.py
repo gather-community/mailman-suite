@@ -128,6 +128,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django_mailman3.context_processors.common',
                 'hyperkitty.context_processors.common',
+                'postorius.context_processors.postorius',
             ],
         },
     },
@@ -280,6 +281,8 @@ DEFAULT_FROM_EMAIL = 'postorius@localhost.local'
 # SERVER_EMAIL = 'root@your-domain.org'
 SERVER_EMAIL = 'root@localhost.local'
 
+# Change this when you have a real email backend
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Compatibility with Bootstrap 3
 from django.contrib.messages import constants as messages  # flake8: noqa
@@ -411,6 +414,10 @@ LOGGING = {
             'class': 'logging.handlers.WatchedFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs', 'mailmansuite.log'),
             'formatter': 'verbose',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         },
     },
     'loggers': {
