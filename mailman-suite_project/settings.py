@@ -37,7 +37,7 @@ SECRET_KEY = 'change-this-on-your-production-server'
 DEBUG = False
 
 ADMINS = (
-     ('HyperKitty Admin', 'root@localhost'),
+     ('Mailman Suite Admin', 'root@localhost'),
 )
 
 SITE_ID = 1
@@ -46,7 +46,7 @@ SITE_ID = 1
 # See https://docs.djangoproject.com/en/1.8/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     "localhost",  # Archiving API from Mailman, keep it.
-    "lists.your-domain.org",
+    # "lists.your-domain.org",
     # Add here all production URLs you may have.
 ]
 
@@ -61,6 +61,7 @@ MAILMAN_ARCHIVER_FROM = ('127.0.0.1', '::1')
 
 INSTALLED_APPS = (
     'hyperkitty',
+    'postorius',
     'django_mailman3',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
@@ -103,6 +104,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django_mailman3.middleware.TimezoneMiddleware',
+    'postorius.middleware.PostoriusMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -142,10 +144,10 @@ DATABASES = {
         # Use 'sqlite3', 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'ENGINE': 'django.db.backends.sqlite3',
         # DB name or path to database file if using sqlite3.
-        'NAME': os.path.join(BASE_DIR, 'hyperkitty.db'),
+        'NAME': os.path.join(BASE_DIR, 'mailmansuite.db'),
         # The following settings are not used with sqlite3:
-        'USER': 'hyperkitty',
-        'PASSWORD': 'hkpass',
+        'USER': 'mailmansuite',
+        'PASSWORD': 'mmpass',
         # HOST: empty for localhost through domain sockets or '127.0.0.1' for
         # localhost through TCP.
         'HOST': '',
@@ -186,6 +188,28 @@ DATABASES = {
 # CSRF_COOKIE_HTTPONLY = True
 # X_FRAME_OPTIONS = 'DENY'
 
+
+# Password validation
+# https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME':
+'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME':
+'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME':
+'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME':
+'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -238,7 +262,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 
 LOGIN_URL = 'account_login'
-LOGIN_REDIRECT_URL = 'hk_root'
+LOGIN_REDIRECT_URL = 'list_index'
 LOGOUT_URL = 'account_logout'
 
 
@@ -247,12 +271,14 @@ LOGOUT_URL = 'account_logout'
 # otherwise the emails may get rejected.
 # https://docs.djangoproject.com/en/1.8/ref/settings/#default-from-email
 # DEFAULT_FROM_EMAIL = "mailing-lists@you-domain.org"
+DEFAULT_FROM_EMAIL = 'postorius@localhost.local'
 
 # If you enable email reporting for error messages, this is where those emails
 # will appear to be coming from. Make sure you set a valid domain name,
 # otherwise the emails may get rejected.
 # https://docs.djangoproject.com/en/1.8/ref/settings/#std:setting-SERVER_EMAIL
 # SERVER_EMAIL = 'root@your-domain.org'
+SERVER_EMAIL = 'root@localhost.local'
 
 
 # Compatibility with Bootstrap 3
@@ -274,7 +300,8 @@ AUTHENTICATION_BACKENDS = (
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
+# You probably want https in production, but this is a dev setup file
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
 ACCOUNT_UNIQUE_EMAIL  = True
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -382,7 +409,7 @@ LOGGING = {
             'level': 'INFO',
             #'class': 'logging.handlers.RotatingFileHandler',
             'class': 'logging.handlers.WatchedFileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'hyperkitty.log'),
+            'filename': os.path.join(BASE_DIR, 'logs', 'mailmansuite.log'),
             'formatter': 'verbose',
         },
     },
@@ -401,6 +428,10 @@ LOGGING = {
             'handlers': ['file'],
             'level': 'DEBUG',
             'propagate': True,
+        },
+        'postorius': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
         },
     },
     'formatters': {
