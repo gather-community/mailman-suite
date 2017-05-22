@@ -79,6 +79,7 @@ INSTALLED_APPS = (
     'compressor',
     'haystack',
     'django_extensions',
+    'django_q',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
