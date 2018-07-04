@@ -493,6 +493,9 @@ if DEBUG == True:
 FILTER_VHOST = False
 
 
+POSTORIUS_TEMPLATE_BASE_URL = 'http://localhost:8000'
+
+
 try:
     from settings_local import *
 except ImportError:
