@@ -82,14 +82,15 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'django_mailman3.lib.auth.fedora',
-    'allauth.socialaccount.providers.openid',
-    'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.gitlab',
-    'allauth.socialaccount.providers.google',
+    # 'django_mailman3.lib.auth.fedora',
+    # 'allauth.socialaccount.providers.openid',
+    # 'allauth.socialaccount.providers.github',
+    # 'allauth.socialaccount.providers.gitlab',
+    # 'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.twitter',
-    'allauth.socialaccount.providers.stackexchange',
+    # 'allauth.socialaccount.providers.twitter',
+    # 'allauth.socialaccount.providers.stackexchange',
+    'discoursessoclient'
 )
 
 
@@ -99,6 +100,7 @@ MIDDLEWARE = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'discoursessoclient.client.DiscourseSsoClientMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
