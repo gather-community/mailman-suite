@@ -262,12 +262,6 @@ STATICFILES_FINDERS = (
 # https://bugs.launchpad.net/django-openid-auth/+bug/1252826
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
-
-LOGIN_URL = 'account_login'
-LOGIN_REDIRECT_URL = 'list_index'
-LOGOUT_URL = 'account_logout'
-
-
 # If you enable internal authentication, this is the address that the emails
 # will appear to be coming from. Make sure you set a valid domain name,
 # otherwise the emails may get rejected.
@@ -495,6 +489,22 @@ FILTER_VHOST = False
 
 POSTORIUS_TEMPLATE_BASE_URL = 'http://localhost:8000'
 
+######################################################################
+# Discourse-style single sign on
+# Enter something non-trivially random, like the output of `secrets.token_hex`
+SSO_SECRET = 'ssosecret'
+
+# The URL of the SSO provider endpoint as described in the Discourse protocol.
+# Typically a system that you control where users' credentials are stored and where sign-in takes place.
+SSO_PROVIDER_URL = 'http://localhost:3000/sso'
+
+# The base URL of the server where this app is being used. Needed to construct the return URL to send
+# to the SSO provider.
+SSO_CLIENT_BASE_URL = 'http://localhost:8000'
+
+# This is a Django setting. It doesn't need to be changed but should be the only instance of LOGIN_URL
+# in your settings.py file.
+LOGIN_URL = '/sso/init'
 
 try:
     from settings_local import *
