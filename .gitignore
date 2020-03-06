@@ -1,0 +1,7 @@
+*.db
+__pycache__
+/mailman-suite_project/static
+/mailman-suite_project/logs
+
+# This will be added via a separate checkout
+/mailman-suite_project/discoursessoclient
